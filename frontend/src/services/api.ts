@@ -92,6 +92,15 @@ export interface ApiError {
   suggestion?: string;
 }
 
+export function isApiError(value: unknown): value is ApiError {
+  return (
+    typeof value === 'object'
+    && value !== null
+    && typeof (value as ApiError).code === 'number'
+    && typeof (value as ApiError).message === 'string'
+  );
+}
+
 export interface RequestConfig {
   timeout?: number;
   retries?: number;
@@ -234,7 +243,7 @@ async function request<T>(
       const response = await fetch(requestConfig.url, requestConfig);
       clearTimeout(timeoutId);
 
-      const responseData = await parseResponse<T>(response);
+      const responseData = await parseResponse<T>(response, requestConfig.url);
 
       // Apply response interceptors
       let apiResponse: ApiResponse<T> = responseData;
@@ -244,6 +253,14 @@ async function request<T>(
 
       return apiResponse;
     } catch (error) {
+      if (isApiError(error)) {
+        let processedError = error;
+        for (const interceptor of errorInterceptors) {
+          processedError = interceptor(processedError);
+        }
+        throw processedError;
+      }
+
       lastError = error as Error;
 
       if (attempt < maxRetries && method === 'GET') {
@@ -287,7 +304,7 @@ function buildUrl(path: string, params?: QueryParams): string {
   return qs ? `${baseUrl}?${qs}` : baseUrl;
 }
 
-async function parseResponse<T>(response: Response): Promise<ApiResponse<T>> {
+async function parseResponse<T>(response: Response, requestUrl: string): Promise<ApiResponse<T>> {
   const contentType = response.headers.get('content-type') || '';
 
   let data: T;
@@ -302,6 +319,10 @@ async function parseResponse<T>(response: Response): Promise<ApiResponse<T>> {
     data = (await response.text()) as unknown as T;
   }
 
+  if (!response.ok) {
+    throw buildHttpError(response, data, requestUrl);
+  }
+
   const pagination = extractPagination(response.headers);
 
   return {
@@ -310,6 +331,46 @@ async function parseResponse<T>(response: Response): Promise<ApiResponse<T>> {
     message: response.statusText,
     requestId: response.headers.get('X-Request-ID') || undefined,
     pagination,
+  };
+}
+
+function buildHttpError(response: Response, data: unknown, requestUrl: string): ApiError {
+  const headerRequestId = response.headers.get('X-Request-ID') || undefined;
+
+  if (data && typeof data === 'object' && !Array.isArray(data)) {
+    const payload = data as Record<string, unknown>;
+    const nested =
+      payload.error && typeof payload.error === 'object'
+        ? (payload.error as Record<string, unknown>)
+        : payload;
+
+    return {
+      code: response.status,
+      message: String(
+        nested.message || payload.message || response.statusText || 'Request failed',
+      ),
+      details: (nested.details || payload.details) as Record<string, unknown> | undefined,
+      requestId: String(payload.requestId || nested.requestId || headerRequestId || '') || undefined,
+      path: String(payload.path || nested.path || requestUrl),
+      suggestion: nested.suggestion ? String(nested.suggestion) : undefined,
+      timestamp: nested.timestamp ? String(nested.timestamp) : undefined,
+    };
+  }
+
+  if (typeof data === 'string') {
+    return {
+      code: response.status,
+      message: data || response.statusText || 'Request failed',
+      requestId: headerRequestId,
+      path: requestUrl,
+    };
+  }
+
+  return {
+    code: response.status,
+    message: response.statusText || 'Request failed',
+    requestId: headerRequestId,
+    path: requestUrl,
   };
 }
 
@@ -336,7 +397,7 @@ function normalizeError(error: Error | null): ApiError {
     return { code: 0, message: 'Unknown error' };
   }
 
-  if (error.name === 'AbortError') {
+  if (error.name === 'AbortError' || (error instanceof DOMException && error.name === 'AbortError')) {
     return {
       code: 408,
       message: 'Request timed out',
