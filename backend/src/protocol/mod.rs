@@ -44,6 +44,7 @@ pub const MAX_MESSAGE_SIZE: usize = 10 * 1024 * 1024;
 pub const DEFAULT_TIMEOUT_MS: u64 = 30000;
 
 /// Protocol-level error codes.
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ProtocolError {
     Unknown = 0,
@@ -100,6 +101,7 @@ pub mod capabilities {
 }
 
 /// Protocol version negotiation result.
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VersionNegotiation {
     pub client_version: u32,

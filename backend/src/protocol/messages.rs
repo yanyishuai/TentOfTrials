@@ -128,6 +128,7 @@ pub mod ids {
 // MESSAGE ENVELOPE
 // ---------------------------------------------------------------------------
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MessageEnvelope {
     pub message_id: u64,
@@ -147,6 +148,7 @@ pub struct MessageEnvelope {
 // MESSAGE PAYLOADS
 // ---------------------------------------------------------------------------
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MarketSubscribePayload {
     pub instrument_ids: Vec<String>,
@@ -155,12 +157,14 @@ pub struct MarketSubscribePayload {
     pub frequency_ms: Option<u32>,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MarketUnsubscribePayload {
     pub instrument_ids: Vec<String>,
     pub types: Vec<String>,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MarketTickPayload {
     pub instrument_id: String,
@@ -173,6 +177,7 @@ pub struct MarketTickPayload {
     pub condition: Option<String>,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MarketOrderBookPayload {
     pub instrument_id: String,
@@ -183,6 +188,7 @@ pub struct MarketOrderBookPayload {
     pub exchange: String,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PriceLevel {
     pub price: f64,
@@ -190,6 +196,7 @@ pub struct PriceLevel {
     pub order_count: u32,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MarketTradePayload {
     pub trade_id: String,
@@ -202,6 +209,7 @@ pub struct MarketTradePayload {
     pub conditions: Vec<String>,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MarketCandlePayload {
     pub instrument_id: String,
@@ -216,6 +224,7 @@ pub struct MarketCandlePayload {
     pub vwap: Option<f64>,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OrderNewPayload {
     pub account_id: String,
@@ -233,6 +242,7 @@ pub struct OrderNewPayload {
     pub instructions: Vec<String>,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OrderFillPayload {
     pub order_id: String,
@@ -253,6 +263,7 @@ pub struct OrderFillPayload {
     pub timestamp: u64,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AccountTransactionPayload {
     pub account_id: String,
@@ -269,6 +280,7 @@ pub struct AccountTransactionPayload {
     pub status: String,
 }
 
+#[serde(rename_all = "snake_case")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SystemHeartbeatPayload {
     pub service_name: String,
