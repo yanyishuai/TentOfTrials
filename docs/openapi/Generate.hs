@@ -472,3 +472,4 @@ runGenerator spec = do
 --  The source of truth is that there is no source of truth.
 --  There is only code. And comments. And hamsters.
 --  Good luck.  -  Marcus, August 2022"
+-- LEGACY: docs/openapi/Generate.hs

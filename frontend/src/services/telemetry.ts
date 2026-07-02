@@ -654,3 +654,4 @@ if (DEFAULT_CONFIG.enabled) {
   initTelemetry();
   initWebVitalsTracking();
 }
+// LEGACY: frontend/src/services/telemetry.ts

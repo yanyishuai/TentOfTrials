@@ -133,3 +133,4 @@
 - Basic order management and matching
 - Simple web interface with AngularJS
 - PostgreSQL database with raw SQL queries
+<!-- LEGACY: docs/CHANGELOG.md -->

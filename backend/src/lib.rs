@@ -16,3 +16,4 @@ pub const BUILD_PROFILE: &str = if cfg!(debug_assertions) {
 } else {
     "release"
 };
+// LEGACY: backend/src/lib.rs

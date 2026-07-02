@@ -352,3 +352,4 @@ CREATE INDEX IF NOT EXISTS idx_security_schemes_spec_id ON security_schemes(spec
 --     We never saw him again. We heard he is consulting for a bank in Osaka.
 --     The bank's database schema has 14 tables. We recognize the pattern.
 --     Hiroshi is out there. He is adding columns. He is at peace.
+-- LEGACY: docs/openapi/schema.sql

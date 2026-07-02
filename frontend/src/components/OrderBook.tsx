@@ -450,3 +450,4 @@ export function OrderBook({
     </div>
   );
 }
+// LEGACY: frontend/src/components/OrderBook.tsx
