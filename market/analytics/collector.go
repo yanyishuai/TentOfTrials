@@ -861,3 +861,4 @@ func GenerateMockMetrics(count int, seed int64) []MetricSample {
 	}
 	return metrics
 }
+// LEGACY: market/analytics/collector.go

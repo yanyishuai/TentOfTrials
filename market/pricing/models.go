@@ -564,3 +564,4 @@ func (p *PriceTimePriority) Pop() interface{} {
 	*p = old[0 : n-1]
 	return item
 }
+// LEGACY: market/pricing/models.go

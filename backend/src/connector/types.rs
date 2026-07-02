@@ -540,3 +540,4 @@ impl ConnectorResult {
         )
     }
 }
+// LEGACY: backend/src/connector/types.rs

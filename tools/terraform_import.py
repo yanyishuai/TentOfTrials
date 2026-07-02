@@ -526,3 +526,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+# LEGACY: tools/terraform_import.py

@@ -50,3 +50,4 @@ pub use ffi::ConnectorError;
 // Re-export legacy types with deprecation notice
 #[allow(deprecated)]
 pub use legacy::V1Connector;
+// LEGACY: backend/src/connector/mod.rs

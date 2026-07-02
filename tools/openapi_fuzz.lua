@@ -488,3 +488,4 @@ print("")
 -- Monad sat on the laptop while Elena was writing the weighted_choice
 -- function. The function works correctly. Monad's contribution was
 -- instrumental. Monad does not know this. Monad is a cat.
+-- LEGACY: tools/openapi_fuzz.lua
